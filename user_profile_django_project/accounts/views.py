@@ -58,6 +58,6 @@ def sign_out(request):
 
 
 @login_required
-def user_profile(request, userprofile_pk):
-    course = get_object_or_404(models.UserProfile, pk=userprofile_pk)
+def profile(request, userprofile_pk):
+    course = get_object_or_404(models.User, pk=user_pk)
     pass
