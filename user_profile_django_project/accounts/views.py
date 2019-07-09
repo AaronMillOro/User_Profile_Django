@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from . import models
 
 def sign_in(request):
@@ -16,9 +16,7 @@ def sign_in(request):
                 user = form.user_cache
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect(
-                        reverse('home')  # TODO: go to profile
-                    )
+                    return HttpResponseRedirect(reverse('profile'), {'user': user})
                 else:
                     messages.error(
                         request,
@@ -47,7 +45,7 @@ def sign_up(request):
                 request,
                 "You're now a user! You've been signed in, too."
             )
-            return HttpResponseRedirect(reverse('home'))  # TODO: go to profile
+            return HttpResponseRedirect(reverse('profile'), {'user': user})
     return render(request, 'accounts/sign_up.html', {'form': form})
 
 
@@ -57,7 +55,6 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required
-def profile(request, userprofile_pk):
-    course = get_object_or_404(models.User, pk=user_pk)
-    pass
+def profile(request, pk):
+    #user = get_object_or_404(models.User, pk=user_pk)
+    return render(request, 'accounts/profile.html', {'user': user})

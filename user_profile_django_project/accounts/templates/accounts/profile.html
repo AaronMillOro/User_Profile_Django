@@ -2,6 +2,8 @@
 {% load static from staticfiles %}
 
 {% block body %}
+<h1> Welcome {{ username }} !</h1>
+<!--
 <img class="figure" src="{% static user.avatar %}">
 <div class="grid-75">
 User name: {{ user.first_name }}<br>
@@ -9,5 +11,5 @@ User last name: {{ user.last_name }}<br>
 Email: {{ user.email }} <br>
 Date of birth: {{ user.date_birth }}<br>
 Short biography: <br>{{ user.bio }}
-</div>
+</div>-->
 {% endblock%}

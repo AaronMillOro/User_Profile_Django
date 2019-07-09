@@ -6,7 +6,7 @@
     <!-- Basic Page Needs
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta charset="utf-8">
-    <title>{% block title %}Circle{% endblock %}</title>
+    <title>{% block title %}Circle - User profile{% endblock %}</title>
 
     <!-- Mobile Specific Metas
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -38,17 +38,9 @@
     <div class="bounds">
         <div class="circle--fluid">
             <div class="circle--fluid--cell">
-                <h1 class="hide-text circle--logo"><a class="logo"
-                                                      href="{% url 'home' %}">Circle</a>
+                <h1 class="hide-text circle--logo">
+                  <a class="logo" href="{% url 'home' %}">Circle</a>
                 </h1>
-            </div>
-            <div class="circle--fluid--cell circle--fluid--primary">
-                <nav>
-                    <ul class="circle--inline">
-                        <li><a href="#">nav</a></li>
-                        <li><a href="#">here?</a></li>
-                    </ul>
-                </nav>
             </div>
             <div class="circle--fluid--cell circle--fluid--secondary">
                 <nav>
@@ -57,8 +49,8 @@
                             <li><a href="{% url 'accounts:sign_up' %}">Sign Up</a></li>
                             <li><a href="{% url 'accounts:sign_in' %}">Sign In</a></li>
                         {% else %}
-                            <!-- view profile link here? -->
-                            <!-- edit profile link here? -->
+                            <li><a href="#">Edit profile</a></li>
+                            <li><a href="#">Change password</a></li>
                             <li><a href="{% url 'accounts:sign_out' %}">Sign Out</a></li>
                         {% endif %}
                     </ul>
