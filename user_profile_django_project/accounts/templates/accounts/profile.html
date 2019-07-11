@@ -1,15 +1,15 @@
 {% extends 'layout.html' %}
 {% load static from staticfiles %}
+{% block title %} User profile  {{ super }}{% endblock %}
 
 {% block body %}
-<h1> Welcome {{ username }} !</h1>
-<!--
-<img class="figure" src="{% static user.avatar %}">
-<div class="grid-75">
-User name: {{ user.first_name }}<br>
-User last name: {{ user.last_name }}<br>
-Email: {{ user.email }} <br>
-Date of birth: {{ user.date_birth }}<br>
-Short biography: <br>{{ user.bio }}
-</div>-->
+<div class="grid-85">
+    <h1> Welcome !</h1>
+    <img class="figure" src="{% static user.avatar %}">
+    <h3>User name: </h3> {{ user.first_name }}<br>
+    <h3>Last name: </h3> {{ user.last_name }}<br>
+    <h3>Email: </h3>  {{ user.email }} <br>
+    <h3>Date of birth: </h3> {{ user.date_birth }}<br>
+    <h3>Short biography </h3> <br>{{ user.bio }}
+</div>
 {% endblock%}

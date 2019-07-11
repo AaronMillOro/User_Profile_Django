@@ -8,3 +8,6 @@ class User(models.Model):
     date_birth = models.DateField()
     bio = models.TextField()
     avatar = models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return self.title

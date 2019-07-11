@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+
+from . import forms
 from . import models
 
 def sign_in(request):
@@ -16,7 +18,9 @@ def sign_in(request):
                 user = form.user_cache
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('profile'), {'user': user})
+                    return HttpResponseRedirect(
+                        reverse('accounts:profile')
+                    )
                 else:
                     messages.error(
                         request,
@@ -45,7 +49,7 @@ def sign_up(request):
                 request,
                 "You're now a user! You've been signed in, too."
             )
-            return HttpResponseRedirect(reverse('profile'), {'user': user})
+            return HttpResponseRedirect(reverse('accounts:profile'))
     return render(request, 'accounts/sign_up.html', {'form': form})
 
 
@@ -55,6 +59,16 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-def profile(request, pk):
-    #user = get_object_or_404(models.User, pk=user_pk)
+@login_required
+def profile(request):
+    """ Displays the user information"""
+    messages.info(request, 'You can update your profile by clicking in the edit option above')
+    user = request.user
     return render(request, 'accounts/profile.html', {'user': user})
+
+"""@login_required
+def profile_edit(request):
+    #Edits profile information provided by user
+    user = request.user
+    return render(request, 'accounts/profile_form.html', {'user': user})
+"""

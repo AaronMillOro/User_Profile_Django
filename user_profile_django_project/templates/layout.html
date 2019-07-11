@@ -6,7 +6,7 @@
     <!-- Basic Page Needs
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta charset="utf-8">
-    <title>{% block title %}Circle - User profile{% endblock %}</title>
+    <title>{% block title %}Circle{% endblock %}</title>
 
     <!-- Mobile Specific Metas
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -38,8 +38,8 @@
     <div class="bounds">
         <div class="circle--fluid">
             <div class="circle--fluid--cell">
-                <h1 class="hide-text circle--logo">
-                  <a class="logo" href="{% url 'home' %}">Circle</a>
+                <h1 class="hide-text circle--logo"><a class="logo"
+                                                      href="{% url 'home' %}">Circle</a>
                 </h1>
             </div>
             <div class="circle--fluid--cell circle--fluid--secondary">
@@ -47,9 +47,10 @@
                     <ul class="circle--inline">
                         {% if not user.is_authenticated %}
                             <li><a href="{% url 'accounts:sign_up' %}">Sign Up</a></li>
-                            <li><a href="{% url 'accounts:sign_in' %}">Sign In</a></li>
+                            <li><a href="{% url 'accounts:sign_in' %}">Sign
+                                In</a></li>
                         {% else %}
-                            <li><a href="#">Edit profile</a></li>
+                            <li><a href="#">Edit Profile</a></li>
                             <li><a href="#">Change password</a></li>
                             <li><a href="{% url 'accounts:sign_out' %}">Sign Out</a></li>
                         {% endif %}
