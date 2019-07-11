@@ -66,9 +66,8 @@ def profile(request):
     user = request.user
     return render(request, 'accounts/profile.html', {'user': user})
 
-"""@login_required
+@login_required
 def profile_edit(request):
     #Edits profile information provided by user
-    user = request.user
-    return render(request, 'accounts/profile_form.html', {'user': user})
-"""
+    form = forms.UserForm()
+    return render(request, 'accounts/profile_edit.html', {'form': form})
