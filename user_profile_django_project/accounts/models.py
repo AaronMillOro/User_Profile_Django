@@ -7,7 +7,7 @@ class User(models.Model):
     email = models.EmailField(max_length=255)
     date_birth = models.DateField()
     bio = models.TextField()
-    avatar = models.ImageField(upload_to='images/')
+    avatar = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
         return self.title

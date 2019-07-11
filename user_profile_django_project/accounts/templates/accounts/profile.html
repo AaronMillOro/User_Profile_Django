@@ -3,13 +3,15 @@
 {% block title %} User profile  {{ super }}{% endblock %}
 
 {% block body %}
-<div class="grid-85">
-    <h1> Welcome !</h1>
-    <img class="figure" src="{% static user.avatar %}">
-    <h3>User name: </h3> {{ user.first_name }}<br>
-    <h3>Last name: </h3> {{ user.last_name }}<br>
-    <h3>Email: </h3>  {{ user.email }} <br>
-    <h3>Date of birth: </h3> {{ user.date_birth }}<br>
-    <h3>Short biography </h3> <br>{{ user.bio }}
+<h1> Welcome !</h1>
+<div class="grid-30">
+    <img class="figure" src="{% static user.avatar %}"><br>
+</div>
+<div class="grid-70 ">
+    <b>User name: </b> {{ user.first_name }}<br><br>
+    <b>Last name: </b> {{ user.last_name }}<br><br>
+    <b>Email: </b>  {{ user.email }} <br><br>
+    <b>Date of birth: </b> {{ user.date_birth }}<br><br>
+    <b>Short biography </b> <br><br>{{ user.bio }}
 </div>
 {% endblock%}

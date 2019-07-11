@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from . import forms
 from . import models
@@ -66,8 +66,18 @@ def profile(request):
     user = request.user
     return render(request, 'accounts/profile.html', {'user': user})
 
+
 @login_required
 def profile_edit(request):
-    #Edits profile information provided by user
+    """Edits profile information provided by user"""
+    user = request.user
     form = forms.UserForm()
-    return render(request, 'accounts/profile_edit.html', {'form': form})
+
+    if request.method == 'POST':
+        form = forms.UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated")
+            return HttpResponseRedirect(reverse('accounts:profile'))
+    return render(request, 'accounts/profile_edit.html', {'form': form,
+                                                          'user':user})
