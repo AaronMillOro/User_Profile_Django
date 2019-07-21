@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% load static from staticfiles %}
+
+{% block title %} Edit profile  {{ user.username|title }}{% endblock %}
+
+{% block body %}
+    <div class="row columns">
+        {{ block.super }}
+    </div>
+    <div class="row columns">
+        <h1>Personal information</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <section>
+              {{ user_form.as_p }}
+              {{ profile_form.as_p }}
+            </section>
+            <input type="submit" class="button" value="Save">
+        </form>
+    </div>
+{% endblock %}
