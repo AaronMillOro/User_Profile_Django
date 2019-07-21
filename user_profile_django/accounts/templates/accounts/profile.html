@@ -5,7 +5,12 @@
 {% block body %}
 <h1> Welcome !   {{ user.username }} </h1><br>
 <div class="grid-30">
-    <img class="figure" src="{% static profile.avatar %}"><br>
+    {% if profile.avatar != '' %}
+      <img class="figure" src="{{ profile.avatar.url }}" width="300" height="260">
+      <br>
+    {% else %}
+      <b> UPLOAD IMAGE </b>
+    {% endif %}
 </div>
 <div class="grid-35 ">
     <b>Name: </b> {{ user.first_name }}<br>

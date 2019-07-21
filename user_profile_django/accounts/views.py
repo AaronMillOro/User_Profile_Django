@@ -20,7 +20,7 @@ def sign_in(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(
-                        reverse('accounts:profile')  # TODO: go to profile
+                        reverse('accounts:profile')
                     )
                 else:
                     messages.error(
@@ -51,7 +51,7 @@ def sign_up(request):
                 "You're now a user! You've been signed in, too."
             )
             return HttpResponseRedirect(
-                reverse('accounts:profile'))   # TODO: go to profile
+                reverse('accounts:profile'))
     return render(request, 'accounts/sign_up.html', {'form': form})
 
 
@@ -65,8 +65,15 @@ def sign_out(request):
 @transaction.atomic
 def profile_edit(request):
     if request.method == 'POST':
-        user_form = forms.UserForm(request.POST, instance=request.user)
-        profile_form = forms.ProfileForm(request.POST,instance=request.user.profile)
+        user_form = forms.UserForm(
+                                   request.POST,
+                                   instance=request.user
+                                   )
+        profile_form = forms.ProfileForm(
+                                        request.POST,
+                                        request.FILES,
+                                        instance=request.user.profile
+                                        )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -83,8 +90,10 @@ def profile_edit(request):
 
 @login_required
 def profile(request):
-    user = request.user
-    profile = request.user.profile
-    return render(request, 'accounts/profile.html', {'user': user,
-                                                     'profile': profile
-                                                    })
+    if request.method == 'GET':
+
+        user = request.user
+        profile = request.user.profile
+        return render(request, 'accounts/profile.html', {'user': user,
+                                                        'profile': profile
+                                                        })
