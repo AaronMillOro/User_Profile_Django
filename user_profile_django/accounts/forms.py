@@ -23,7 +23,6 @@ class ProfileForm(forms.ModelForm):
             'city',
             'state',
             'country',
-            'residence',
             'fav_animal',
             'hobby',
             )

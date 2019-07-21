@@ -83,10 +83,8 @@ def profile_edit(request):
 
 @login_required
 def profile(request):
-    #user = request.user
     user = request.user
     profile = request.user.profile
-    #profile = get_object_or_404(request.User.Profile, pk=user_id)
     return render(request, 'accounts/profile.html', {'user': user,
                                                      'profile': profile
                                                     })
