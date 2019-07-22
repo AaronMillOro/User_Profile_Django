@@ -24,6 +24,10 @@
 <div class="grid-35">
     <b>Favorite animal: </b> {{ profile.fav_animal }}<br>
     <b>Hobby: </b> {{ profile.hobby }}<br><br>
-    <b>Short biography: </b> <br>{{ profile.bio }}
+    <b>Short biography: </b> <br>
+    {% autoescape off %}
+    {{ profile.bio|force_escape }}
+    {% endautoescape %}
+    <!-- Buit-in filter that escapes HTML-->
 </div>
 {% endblock%}
