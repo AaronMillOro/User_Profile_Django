@@ -2105,3 +2105,8 @@ input[type="email"].circle--input--h6, input[type="number"].circle--input--h6, i
 .logo:hover {
   box-shadow: 0 0 0 15px #fff inset;
 }
+
+.errorlist {
+  background-color: #FFC125;
+  color: #0900ff;
+}

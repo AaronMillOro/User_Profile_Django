@@ -65,25 +65,18 @@ def sign_out(request):
 @transaction.atomic
 def profile_edit(request):
     if request.method == 'POST':
-        user_form = forms.UserForm(
-                                   request.POST,
-                                   instance=request.user
-                                   )
         profile_form = forms.ProfileForm(
                                         request.POST,
                                         request.FILES,
                                         instance=request.user.profile
                                         )
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
+        if profile_form.is_valid():
             profile_form.save()
             messages.success(request,'Profile was successfully updated!')
             return redirect('accounts:profile')
     else:
-        user_form = forms.UserForm(instance=request.user)
         profile_form = forms.ProfileForm(instance=request.user.profile)
     return render(request, 'accounts/profile_edit.html', {
-        'user_form': user_form,
         'profile_form': profile_form
         })
 
@@ -91,7 +84,6 @@ def profile_edit(request):
 @login_required
 def profile(request):
     if request.method == 'GET':
-
         user = request.user
         profile = request.user.profile
         return render(request, 'accounts/profile.html', {'user': user,
