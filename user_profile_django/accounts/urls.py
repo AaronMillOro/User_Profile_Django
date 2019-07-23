@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'sign_out/$', views.sign_out, name='sign_out'),
     url(r'profile/$', views.profile, name='profile'),
     url(r'profile/edit/$', views.profile_edit, name='profile_edit'),
+    url(r'profile/change_password/$', views.change_pass, name='change_pass'),
 ]

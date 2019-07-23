@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from . import models
 
@@ -41,7 +42,7 @@ class ProfileForm(forms.ModelForm):
         return bio
 
     def clean_confirm_email(self):
-        ''' Validation of same email address '''
+        ''' Validation of email address '''
         email = self.cleaned_data.get('email')
         confirm_email = self.cleaned_data.get('confirm_email')
         if email == confirm_email:
