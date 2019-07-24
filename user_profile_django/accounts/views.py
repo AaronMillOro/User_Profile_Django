@@ -3,8 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
-                                       PasswordChangeForm)
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -90,16 +89,14 @@ def profile(request):
 @login_required
 def change_pass(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = forms.ChangePasswordForm(request.user, request.POST)
         if form.is_valid():
-            password = form.cleaned_data['new_password1']
-            ''' TODO password validators in if, else:'''
-            user = form.save()
-            update_session_auth_hash(request, user)
-            # Important to keep a login session
+            form.save()
+            update_session_auth_hash(request, form.user)
+            # Line above is important to keep session logged
             messages.success(request, 'Password successfully modified!!!')
             return redirect('accounts:profile')
     else:
-        form = PasswordChangeForm(request.user)
+        form = forms.ChangePasswordForm(request.user)
     return render(
                  request, 'accounts/change_password.html', {'form': form})
