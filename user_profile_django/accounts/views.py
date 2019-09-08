@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from . import models
 from . import forms
 
-
 def sign_in(request):
     form = AuthenticationForm()
     if request.method == 'POST':
@@ -31,7 +30,6 @@ def sign_in(request):
                 messages.error(
                     request, "Username or password is incorrect.")
     return render(request, 'accounts/sign_in.html', {'form': form})
-
 
 def sign_up(request):
     form = UserCreationForm()
@@ -52,12 +50,10 @@ def sign_up(request):
                 reverse('accounts:profile'))
     return render(request, 'accounts/sign_up.html', {'form': form})
 
-
 def sign_out(request):
     logout(request)
     messages.success(request, "You've been signed out. Come back soon!")
     return HttpResponseRedirect(reverse('home'))
-
 
 @login_required
 @transaction.atomic
@@ -75,7 +71,6 @@ def profile_edit(request):
     return render(request, 'accounts/profile_edit.html', {
         'profile_form': profile_form})
 
-
 @login_required
 def profile(request):
     if request.method == 'GET':
@@ -84,7 +79,6 @@ def profile(request):
         return render(request, 'accounts/profile.html', {'user': user,
                                                         'profile': profile
                                                         })
-
 
 @login_required
 def change_pass(request):

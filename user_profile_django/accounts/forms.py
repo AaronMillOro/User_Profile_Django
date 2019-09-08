@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.forms.widgets import PasswordInput
 import re
 
-
 from . import models
 
 
