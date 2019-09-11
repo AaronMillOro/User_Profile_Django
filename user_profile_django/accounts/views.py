@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from . import models
 from . import forms
+from . import password_validator
 
 def sign_in(request):
     form = AuthenticationForm()
@@ -40,21 +41,18 @@ def sign_up(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-
-            if username.lower() in password.lower():
-                raise ValidationError('Password is too similar to username')
-            else:
+            if password_validator.password_validator(username, password) == True:
                 form.save()
                 user = authenticate(
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password1']
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1']
                 )
                 login(request, user)
-                messages.success(
-                    request,
-                    "You're now a user! You've been signed in, too."
-                )
+                messages.success(request,
+                "You're now a user! You've been signed in, too.")
                 return HttpResponseRedirect(reverse('accounts:profile'))
+            else:
+                return HttpResponseRedirect(reverse('accounts:sign_up'))
     return render(request, 'accounts/sign_up.html', {'form': form})
 
 def sign_out(request):
