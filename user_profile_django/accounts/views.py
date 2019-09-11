@@ -9,10 +9,11 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+import re
 
 from . import models
 from . import forms
-from . import password_validator
+
 
 def sign_in(request):
     form = AuthenticationForm()
@@ -33,6 +34,7 @@ def sign_in(request):
                     request, "Username or password is incorrect.")
     return render(request, 'accounts/sign_in.html', {'form': form})
 
+
 def sign_up(request):
     form = UserCreationForm()
     if request.method == 'POST':
@@ -41,7 +43,31 @@ def sign_up(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-            if password_validator.password_validator(username, password) == True:
+
+            rgx_characters = re.compile(r'[A-Za-z]+')
+            rgx_digits = re.compile(r'[0-9]+')
+            rgx_special_characters = re.compile(r'[!@#$%^&*(),.?":{}|<>]+')
+
+            if len(password) < 14:
+                # Minimum password length of 14 characters.
+                raise ValidationError('''Password should have at
+                least 13 characters''')
+
+            elif not rgx_characters.findall(''.join(sorted(password))):
+                # Must use of both uppercase and lowercase letters
+                raise ValidationError('Use both UPPER and LOWERcase letters')
+
+            elif not rgx_digits.findall(''.join(sorted(password))):
+                # Must contain 1 digit
+                raise ValidationError('Password must contain at least 1 DIGIT')
+
+            elif not rgx_special_characters.findall(''.join(sorted(password))):
+                # Match any special characters
+                raise ValidationError('Special characters required:@,$,%,%')
+            elif username in password.lower():
+                # password cannot contain username
+                raise ValidationError('Password is too similar to username')
+            else:
                 form.save()
                 user = authenticate(
                 username=form.cleaned_data['username'],
@@ -51,14 +77,14 @@ def sign_up(request):
                 messages.success(request,
                 "You're now a user! You've been signed in, too.")
                 return HttpResponseRedirect(reverse('accounts:profile'))
-            else:
-                return HttpResponseRedirect(reverse('accounts:sign_up'))
     return render(request, 'accounts/sign_up.html', {'form': form})
+
 
 def sign_out(request):
     logout(request)
     messages.success(request, "You've been signed out. Come back soon!")
     return HttpResponseRedirect(reverse('home'))
+
 
 @login_required
 @transaction.atomic
@@ -78,6 +104,7 @@ def profile_edit(request):
     return render(request, 'accounts/profile_edit.html',
         {'profile_form': profile_form,'user_form': user_form})
 
+
 @login_required
 def profile(request):
     if request.method == 'GET':
@@ -85,6 +112,7 @@ def profile(request):
         profile = request.user.profile
         return render(request, 'accounts/profile.html',
             {'user': user,'profile': profile})
+
 
 @login_required
 def change_pass(request):
