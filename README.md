@@ -47,7 +47,7 @@ This project describes a form that was built to record personal details of a reg
 		http://localhost:5000/
 
 
-![Figure display](https://github.com/AaronMillOro/User_Profile_Django/blob/master/user_profile_django/media/images/armin_d_850.jpg)
+![Figure display](https://github.com/AaronMillOro/User_Profile_Django/blob/master/user_profile_django/media/images/Screenshot.png)
 
 
 5. You can **Sign in** with a pre-loaded profile :
