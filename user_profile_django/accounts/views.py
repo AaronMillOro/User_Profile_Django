@@ -5,6 +5,7 @@ from django.contrib.auth import (authenticate, login, logout,
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -35,19 +36,25 @@ def sign_up(request):
     form = UserCreationForm()
     if request.method == 'POST':
         form = UserCreationForm(data=request.POST)
+
         if form.is_valid():
-            form.save()
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1']
-            )
-            login(request, user)
-            messages.success(
-                request,
-                "You're now a user! You've been signed in, too."
-            )
-            return HttpResponseRedirect(
-                reverse('accounts:profile'))
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+
+            if username.lower() in password.lower():
+                raise ValidationError('Password is too similar to username')
+            else:
+                form.save()
+                user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1']
+                )
+                login(request, user)
+                messages.success(
+                    request,
+                    "You're now a user! You've been signed in, too."
+                )
+                return HttpResponseRedirect(reverse('accounts:profile'))
     return render(request, 'accounts/sign_up.html', {'form': form})
 
 def sign_out(request):
@@ -60,25 +67,26 @@ def sign_out(request):
 def profile_edit(request):
     if request.method == 'POST':
         profile_form = forms.ProfileForm(
-            request.POST, request.FILES,instance=request.user.profile
-        )
-        if profile_form.is_valid():
+            request.POST,request.FILES,instance=request.user.profile)
+        user_form = forms.UserForm(request.POST, instance=request.user)
+        if profile_form.is_valid() and user_form.is_valid():
             profile_form.save()
+            user_form.save()
             messages.success(request,'Profile was successfully updated!')
             return redirect('accounts:profile')
     else:
         profile_form = forms.ProfileForm(instance=request.user.profile)
-    return render(request, 'accounts/profile_edit.html', {
-        'profile_form': profile_form})
+        user_form = forms.UserForm(instance=request.user)
+    return render(request, 'accounts/profile_edit.html',
+        {'profile_form': profile_form,'user_form': user_form})
 
 @login_required
 def profile(request):
     if request.method == 'GET':
         user = request.user
         profile = request.user.profile
-        return render(request, 'accounts/profile.html', {'user': user,
-                                                        'profile': profile
-                                                        })
+        return render(request, 'accounts/profile.html',
+            {'user': user,'profile': profile})
 
 @login_required
 def change_pass(request):

@@ -6,15 +6,12 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     username = models.OneToOneField(User,on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255, blank=True)
+    #first_name = models.CharField(max_length=255, blank=True)
+    #last_name = models.CharField(max_length=255, blank=True)
     email = models.EmailField(null=True,blank=True,unique=True)
     date_birth = models.DateField(null=True,blank=True)
     avatar = models.ImageField(
-                               upload_to='images/',
-                               null=True,
-                               blank=True
-                               )
+        upload_to='images/', null=True, blank=True)
     bio = models.TextField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
     state = models.CharField(max_length=255, blank=True)
